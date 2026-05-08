@@ -27,68 +27,82 @@ export default function TechStrip() {
         Construido con
       </p>
 
-      {/* Mask: fades start at 35% and end at 65% — very centre-heavy */}
+      {/*
+        Fade mask: logos only visible in the middle 30% of the strip.
+        transparent → opaque at 35%, opaque → transparent at 65%.
+      */}
       <div
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 35%, black 65%, transparent 100%)",
           WebkitMaskImage:
             "linear-gradient(to right, transparent 0%, black 35%, black 65%, transparent 100%)",
-          overflow: "hidden",
         }}
       >
         {/*
-          Two identical tracks placed side by side inside a flex row.
-          Track A animates from 0 → -100% (its own width).
-          Track B starts at 100% (right of A) and also moves to 0.
-          When A exits left, B has taken its place — perfect seamless loop.
-          Key: both tracks are `width: max-content` so their natural size
-          drives the animation distance.
+          Marquee technique: the animated div has width:max-content so the
+          browser knows its real pixel width. It contains two identical
+          copies of the logo list. We animate translateX by exactly the
+          pixel width of ONE copy (computed via CSS custom property trick
+          using animation: marquee on the inner track).
+
+          Simpler approach that always works: put the two copies inside a
+          flex row with width:max-content, animate to -50% of that total.
+          Because total = 2 × one-copy, -50% = exactly one copy's width.
+          This is mathematically correct and browser-reliable.
         */}
         <div
-          className="flex"
-          style={{ animation: "tech-marquee 24s linear infinite", willChange: "transform" }}
-          aria-hidden="true"
+          style={{
+            display: "flex",
+            width: "max-content",
+            animation: "tech-marquee 24s linear infinite",
+            willChange: "transform",
+          }}
         >
-          {/* Track A */}
-          <div className="flex flex-shrink-0">
-            {TECHS.map((tech) => (
-              <div
-                key={`a-${tech.name}`}
-                className="flex-shrink-0 flex items-center justify-center"
-                style={{ padding: "0 56px" }}
-              >
-                <Image
-                  src={tech.logo}
-                  alt={tech.name}
-                  width={tech.width}
-                  height={tech.height}
-                  className="object-contain"
-                  style={{ opacity: 0.5, filter: "grayscale(1)" }}
-                />
-              </div>
-            ))}
-          </div>
+          {/* Copy A */}
+          {TECHS.map((tech) => (
+            <div
+              key={`a-${tech.name}`}
+              style={{
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0 64px",
+              }}
+            >
+              <Image
+                src={tech.logo}
+                alt={tech.name}
+                width={tech.width}
+                height={tech.height}
+                style={{ objectFit: "contain", opacity: 0.5, filter: "grayscale(1)" }}
+              />
+            </div>
+          ))}
 
-          {/* Track B — exact duplicate so the loop is seamless */}
-          <div className="flex flex-shrink-0" aria-hidden="true">
-            {TECHS.map((tech) => (
-              <div
-                key={`b-${tech.name}`}
-                className="flex-shrink-0 flex items-center justify-center"
-                style={{ padding: "0 56px" }}
-              >
-                <Image
-                  src={tech.logo}
-                  alt={tech.name}
-                  width={tech.width}
-                  height={tech.height}
-                  className="object-contain"
-                  style={{ opacity: 0.5, filter: "grayscale(1)" }}
-                />
-              </div>
-            ))}
-          </div>
+          {/* Copy B — exact duplicate for seamless wrap */}
+          {TECHS.map((tech) => (
+            <div
+              key={`b-${tech.name}`}
+              aria-hidden="true"
+              style={{
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0 64px",
+              }}
+            >
+              <Image
+                src={tech.logo}
+                alt=""
+                width={tech.width}
+                height={tech.height}
+                style={{ objectFit: "contain", opacity: 0.5, filter: "grayscale(1)" }}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
