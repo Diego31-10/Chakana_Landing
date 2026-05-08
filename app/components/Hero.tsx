@@ -40,6 +40,20 @@ export default function Hero() {
       duration: 0.9,
       ease: "back.out(1.4)",
     }, 0.3);
+
+  // Scroll-driven exit — separate top-level tween (not inside the timeline)
+  gsap.to(".hero-mark", {
+    opacity: 0.15,
+    scale: 0.9,
+    y: -30,
+    ease: "none",
+    scrollTrigger: {
+      trigger: sectionRef.current,
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.2,
+    },
+  });
   }, { scope: sectionRef });
 
   return (
