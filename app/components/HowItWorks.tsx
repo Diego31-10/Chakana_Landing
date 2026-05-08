@@ -78,7 +78,7 @@ export default function HowItWorks() {
     <section
       ref={sectionRef}
       id="como-funciona"
-      className="py-24 px-4"
+      className="pt-24 pb-10 px-4"
     >
       <div className="max-w-5xl mx-auto">
 

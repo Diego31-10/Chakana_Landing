@@ -1,11 +1,76 @@
 "use client";
 
+import { useRef, useEffect } from "react";
+import { gsap } from "@/app/lib/gsap";
+
 export default function Download() {
+  const rectRef = useRef<SVGRectElement>(null);
+  const animRef = useRef<gsap.core.Timeline | null>(null);
+
+  function runTracer() {
+    const rect = rectRef.current;
+    if (!rect) return;
+    if (animRef.current) animRef.current.kill();
+
+    const P = rect.getTotalLength();
+    const dash = 60;
+
+    // ida: dashoffset va de 0 → -(P - dash)
+    // la cabeza arranca en 0 y llega exactamente al final (P)
+    // vuelta: dashoffset vuelve de -(P - dash) → 0
+    // con gap = 9999 la línea NUNCA da la vuelta porque dash << P << 9999
+    const end = -(P - dash);
+
+    gsap.set(rect, { opacity: 0 });
+    rect.setAttribute("stroke-dasharray", `${dash} 9999`);
+    rect.setAttribute("stroke-dashoffset", "0");
+
+    const tl = gsap.timeline();
+    animRef.current = tl;
+
+    tl.to(rect, { opacity: 1, duration: 0.1, ease: "none" });
+
+    // Ida: 0 → end
+    tl.to(rect, {
+      attr: { "stroke-dashoffset": end },
+      duration: 1.5,
+      ease: "power1.inOut",
+    }, "<");
+
+    // Pausa
+    tl.to({}, { duration: 0.2 });
+
+    // Vuelta: end → 0
+    tl.to(rect, {
+      attr: { "stroke-dashoffset": 0 },
+      duration: 1.5,
+      ease: "power1.inOut",
+    });
+
+    tl.to(rect, { opacity: 0, duration: 0.4, ease: "power2.in" });
+  }
+
+  useEffect(() => {
+    function onHashChange() {
+      if (window.location.hash === "#descarga") setTimeout(runTracer, 500);
+    }
+    function onLinkClick(e: MouseEvent) {
+      const a = (e.target as HTMLElement).closest("a");
+      if (a?.getAttribute("href") === "#descarga") setTimeout(runTracer, 300);
+    }
+    window.addEventListener("hashchange", onHashChange);
+    document.addEventListener("click", onLinkClick);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onLinkClick);
+      animRef.current?.kill();
+    };
+  }, []);
+
   return (
-    <section id="descarga" className="py-24 px-4">
+    <section id="descarga" className="pt-10 pb-24 px-4">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
-        {/* Copy */}
         <div>
           <p className="font-body font-semibold text-[11px] tracking-[0.18em] uppercase text-primary mb-4">
             03 · DESCARGA
@@ -18,18 +83,30 @@ export default function Download() {
             primero en saber cuándo está lista.
           </p>
 
-          {/* Waitlist form — placeholder, no backend */}
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex flex-col sm:flex-row gap-3 max-w-md"
-          >
-            <input
-              type="email"
-              placeholder="tu@correo.com"
-              aria-label="Correo electrónico"
-              className="flex-1 px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none focus:ring-2 focus:ring-primary/50 border-0"
-              style={{ backgroundColor: "var(--surface-container-low)" }}
-            />
+          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3 max-w-md">
+            <div className="relative flex-1">
+              <input
+                type="email"
+                placeholder="tu@correo.com"
+                aria-label="Correo electrónico"
+                className="w-full px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none border-0"
+                style={{ backgroundColor: "var(--surface-container-low)" }}
+              />
+              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ overflow: "visible" }}>
+                <rect
+                  ref={rectRef}
+                  x="0" y="0"
+                  width="100%" height="100%"
+                  rx="6" ry="6"
+                  fill="none"
+                  stroke="var(--primary)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray="80 9999"
+                  style={{ opacity: 0 }}
+                />
+              </svg>
+            </div>
             <button
               type="submit"
               className="px-6 py-3 rounded-md bg-gradient-to-b from-primary to-primary-deep text-white font-body font-medium text-sm hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200 whitespace-nowrap"
@@ -38,7 +115,6 @@ export default function Download() {
             </button>
           </form>
 
-          {/* Store badges — static, no action */}
           <div className="flex gap-4 mt-8">
             <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(140,133,123,0.20)] font-body text-xs text-on-surface-muted cursor-default select-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -47,7 +123,6 @@ export default function Download() {
               App Store
               <span style={{ opacity: 0.5 }}>(próximamente)</span>
             </span>
-
             <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(140,133,123,0.20)] font-body text-xs text-on-surface-muted cursor-default select-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M3.18 23.76c.3.17.64.24.99.18l12.47-7.2-2.79-2.79-10.67 9.81zm-1.34-20.9C1.6 3.2 1.5 3.6 1.5 4.04v15.92c0 .44.1.84.34 1.18l.06.06 8.92-8.92v-.21L1.78 2.8l.06.06zm18.04 9.46l-2.52-1.46-3.14 3.14 3.14 3.14 2.54-1.47c.72-.42.72-1.1 0-1.52l-.02.17zm-17.3 10.12l.06-.03 10.3-10.3-2.79-2.79L1.84 20.4l.74 2.04z"/>
@@ -58,7 +133,6 @@ export default function Download() {
           </div>
         </div>
 
-        {/* Aurios visual panel — desktop only */}
         <div className="hidden md:flex flex-col items-center justify-center gap-6 py-12 px-8 bg-surface rounded-md relative overflow-hidden">
           <div className="font-display font-bold text-[80px] leading-none tracking-[-0.04em] text-primary/10 select-none" aria-hidden="true">
             $A

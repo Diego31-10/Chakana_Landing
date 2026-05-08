@@ -32,6 +32,7 @@ main > section:first-child {
   padding-top: max(160px, calc(68px + 3rem));
 }
 
+
 @keyframes tech-marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -42,6 +43,11 @@ main > section:first-child {
   min-width: 100%;
   animation: tech-marquee 24s linear infinite;
   will-change: transform;
+}
+
+a {
+  text-decoration: none !important;
+  background-image: none !important;
 }
 
 html {
