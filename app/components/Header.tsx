@@ -30,26 +30,21 @@ export default function Header() {
         </span>
       </a>
 
-      {/* Nav — hidden on mobile */}
-      <nav className="hidden md:flex gap-7">
-        {["Qué es", "Cómo funciona", "Descarga"].map((label) => (
-          <a
-            key={label}
-            href={`#${label.toLowerCase().replace(/\s/g, "-").replace(/é/g, "e")}`}
-            className="font-body font-medium text-sm text-on-surface underline decoration-transparent underline-offset-4 hover:text-primary hover:decoration-primary transition-colors duration-200"
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
-
-      {/* CTA */}
-      <a
-        href="#descarga"
-        className="font-body font-medium text-sm px-5 py-2.5 rounded-md text-white bg-gradient-to-b from-primary to-primary-deep hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200"
-      >
-        Sumarse
-      </a>
+      {/* Right side — nav + CTA */}
+      <div className="hidden md:flex items-center gap-7">
+        <a
+          href="#como-funciona"
+          className="font-body font-medium text-sm text-on-surface no-underline hover:text-primary transition-colors duration-200"
+        >
+          Cómo funciona
+        </a>
+        <a
+          href="#descarga"
+          className="font-body font-medium text-sm px-5 py-2.5 rounded-md text-white no-underline bg-gradient-to-b from-primary to-primary-deep hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200"
+        >
+          Sumarse
+        </a>
+      </div>
     </header>
   );
 }
