@@ -27,6 +27,11 @@
   --shadow-soil-sm: 0 8px 20px rgba(134, 35, 26, 0.07);
 }
 
+/* Ensure first section clears the fixed header on all screen sizes */
+main > section:first-child {
+  padding-top: max(160px, calc(68px + 3rem));
+}
+
 html {
   scroll-behavior: smooth;
 }
