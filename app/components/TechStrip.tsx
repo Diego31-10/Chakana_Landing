@@ -29,14 +29,16 @@ export default function TechStrip() {
         Construido con
       </p>
 
-      {/* Fade mask — logos visible only in the central 30% */}
+      {/* Constrained viewport: centred 52% of width, small fade on each inner edge */}
       <div
-        className="relative overflow-hidden"
         style={{
+          width: "52%",
+          margin: "0 auto",
           maskImage:
-            "linear-gradient(to right, transparent 0%, black 38%, black 62%, transparent 100%)",
+            "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
           WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, black 38%, black 62%, transparent 100%)",
+            "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
+          overflow: "hidden",
         }}
       >
         {/* Marquee track — inline style animation so it survives SSR hydration */}
@@ -46,7 +48,7 @@ export default function TechStrip() {
             <div
               key={`a-${tech.name}`}
               className="flex-none flex items-center justify-center"
-              style={{ padding: "0 64px" }}
+              style={{ padding: "0 36px" }}
             >
               <Image
                 src={tech.logo}
@@ -63,7 +65,7 @@ export default function TechStrip() {
               key={`b-${tech.name}`}
               aria-hidden="true"
               className="flex-none flex items-center justify-center"
-              style={{ padding: "0 64px" }}
+              style={{ padding: "0 36px" }}
             >
               <Image
                 src={tech.logo}
