@@ -32,7 +32,7 @@ main > section:first-child {
   padding-top: max(160px, calc(68px + 3rem));
 }
 
-@keyframes tech-scroll {
+@keyframes tech-marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
