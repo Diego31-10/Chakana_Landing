@@ -28,7 +28,7 @@ export default function Download() {
               placeholder="tu@correo.com"
               aria-label="Correo electrónico"
               className="flex-1 px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none focus:ring-2 focus:ring-primary/50 border-0"
-              style={{ backgroundColor: "var(--surface-container-highest)" }}
+              style={{ backgroundColor: "var(--surface-container-low)" }}
             />
             <button
               type="submit"
@@ -67,7 +67,7 @@ export default function Download() {
         </div>
 
         {/* Aurios visual panel — desktop only */}
-        <div className="hidden md:flex flex-col items-center justify-center gap-6 py-12 px-8 bg-surface-low rounded-md relative overflow-hidden">
+        <div className="hidden md:flex flex-col items-center justify-center gap-6 py-12 px-8 bg-surface rounded-md relative overflow-hidden">
           <div className="font-display font-bold text-[80px] leading-none tracking-[-0.04em] text-primary/10 select-none" aria-hidden="true">
             $A
           </div>

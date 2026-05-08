@@ -78,7 +78,7 @@ export default function HowItWorks() {
     <section
       ref={sectionRef}
       id="como-funciona"
-      className="py-24 px-4 bg-surface-low"
+      className="py-24 px-4"
     >
       <div className="max-w-5xl mx-auto">
 
@@ -101,7 +101,7 @@ export default function HowItWorks() {
           {STEPS.map((step) => (
             <article
               key={step.number}
-              className="hiw-card relative bg-surface-lowest rounded-md p-8 hover:shadow-soil transition-shadow duration-300"
+              className="hiw-card relative bg-surface rounded-md p-8 hover:shadow-soil transition-shadow duration-300"
             >
               <span
                 className={`font-display font-bold text-5xl leading-none tracking-[-0.03em] mb-6 block ${

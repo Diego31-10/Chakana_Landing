@@ -14,7 +14,7 @@ export default function TechStrip() {
   return (
     <div
       className="relative w-full overflow-hidden py-10"
-      style={{ backgroundColor: "var(--surface-container-low)" }}
+      style={{ backgroundColor: "var(--background)" }}
     >
       {/* Eyebrow */}
       <p
@@ -26,13 +26,13 @@ export default function TechStrip() {
           color: "var(--on-surface-muted)",
         }}
       >
-        Construido con
+        IMPULSADO POR
       </p>
 
       {/* Constrained viewport: centred 52% of width, small fade on each inner edge */}
       <div
         style={{
-          width: "52%",
+          width: "56%",
           margin: "0 auto",
           maskImage:
             "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
