@@ -55,7 +55,7 @@ export function welcomeEmailHtml(email: string): string {
 
           <!-- ── HEADER ── -->
           <tr>
-            <td style="background:linear-gradient(150deg,${primaryDeep} 0%,${primary} 55%,#3d8f8c 100%);padding:44px 44px 36px;text-align:center;">
+            <td style="background:linear-gradient(160deg,#1A0F0D 0%,#2C1410 40%,#1C2E2D 100%);padding:44px 44px 36px;text-align:center;">
               <img src="https://chakana.gavanti.org/logo.svg" alt="Chakana" width="60" height="59" style="display:inline-block;margin-bottom:20px;" />
               <p style="margin:0 0 10px;color:rgba(255,255,255,0.65);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
                 CHAKANA · ECONOMÍA CIRCULAR
