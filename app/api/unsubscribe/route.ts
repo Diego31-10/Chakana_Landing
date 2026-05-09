@@ -55,7 +55,6 @@ function unsubscribePage(state: "success" | "error") {
   <h1 style="margin:0 0 12px;color:${onSurface};font-size:22px;font-weight:700;">${message.title}</h1>
   <p style="margin:0 0 32px;color:${onVariant};font-size:14px;line-height:1.6;">${message.body}</p>
   <a href="https://chakana.gavanti.org" style="display:inline-flex;flex-direction:column;align-items:center;gap:6px;color:${primary};font-size:13px;text-decoration:none;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${primary}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
     <span>Volver a chakana.gavanti.org</span>
   </a>
 </div>
