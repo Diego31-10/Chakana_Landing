@@ -20,32 +20,31 @@ export default function TechStrip() {
       className="relative w-full overflow-hidden py-10"
       style={{ backgroundColor: "var(--background)" }}
     >
-      {/* Eyebrow */}
-      <p
-        className="text-center font-body font-semibold mb-7"
-        style={{
-          fontSize: "10px",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "var(--on-surface-muted)",
-        }}
-      >
-        IMPULSADO POR
-      </p>
+      <div className="max-w-5xl mx-auto px-4">
+        {/* Eyebrow */}
+        <p
+          className="text-center font-body font-semibold mb-7"
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "var(--on-surface-muted)",
+          }}
+        >
+          IMPULSADO POR
+        </p>
 
-      {/* Constrained viewport: centred 52% of width, small fade on each inner edge */}
-      <div
-        style={{
-          width: "56%",
-          margin: "0 auto",
-          maskImage:
-            "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
+        {/* Marquee viewport — fade edges, clips overflow */}
+        <div
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
             WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Marquee track — inline style animation so it survives SSR hydration */}
+              "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+            overflow: "hidden",
+          }}
+        >
+        {/* Marquee track */}
         <div className="tech-marquee-track flex">
           {/* Copy A */}
           {TECHS.map((tech) => (
@@ -92,6 +91,7 @@ export default function TechStrip() {
               />
             </div>
           ))}
+        </div>
         </div>
       </div>
     </div>

@@ -6,8 +6,9 @@ export default function Footer() {
     <footer className="border-t border-[rgba(140,133,123,0.15)] py-12 px-4">
       <div className="max-w-5xl mx-auto">
 
-        {/* Single row — brand left, stamp right */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+          {/* Brand */}
           <div className="flex items-center gap-4">
             <Image src="/logo.svg" alt="Chakana" width={40} height={40} />
             <div>
@@ -29,11 +30,12 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Links */}
+          <div className="flex flex-wrap items-center gap-3">
             <div className="font-body font-semibold text-[11px] tracking-[0.20em] uppercase text-on-surface-muted">
               · CUENCA, ECUADOR ·
             </div>
-            <span className="text-on-surface-muted opacity-30">|</span>
+            <span className="text-on-surface-muted opacity-30 hidden sm:inline">|</span>
             <Link href="/terminos" className="font-body text-[11px] text-on-surface-muted opacity-70 hover:opacity-100 transition-opacity">
               Términos
             </Link>
@@ -41,6 +43,7 @@ export default function Footer() {
               Privacidad
             </Link>
           </div>
+
         </div>
 
 
