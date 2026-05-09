@@ -27,8 +27,8 @@ export function welcomeEmailHtml(email: string): string {
   <tr>
     <td style="background:linear-gradient(160deg,#1A0F0D 0%,#2C1410 45%,#1C2E2D 100%);border-radius:12px 12px 0 0;padding:40px 40px 32px;text-align:center;">
       <img src="https://chakana.gavanti.org/logo-white.svg" alt="Chakana" width="56" height="55" style="display:block;margin:0 auto 18px;"/>
-      <p style="margin:0 0 8px;color:rgba(255,255,255,0.55);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">CHAKANA · ECONOMÍA CIRCULAR</p>
-      <p style="margin:0;color:#fff;font-size:26px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:-0.01em;">Ya estás en la lista.</p>
+      <p style="margin:0 0 8px;color:#9C9189;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">CHAKANA · ECONOMÍA CIRCULAR</p>
+      <p style="margin:0;color:#FFFFFF;font-size:26px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:-0.01em;">Ya estás en la lista.</p>
     </td>
   </tr>
 
