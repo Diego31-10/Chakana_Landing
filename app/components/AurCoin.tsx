@@ -23,14 +23,24 @@ export default function AurCoin({ containerRef }: AurCoinProps) {
 
     const LERP = 0.045;
 
-    function onMove(e: MouseEvent) {
+    function calcRotation(clientX: number, clientY: number) {
       const rect = container!.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      const rawY = ((e.clientX - cx) / (rect.width / 2)) * 60;
-      const rawX = -((e.clientY - cy) / (rect.height / 2)) * 45;
+      const rawY = ((clientX - cx) / (rect.width / 2)) * 60;
+      const rawX = -((clientY - cy) / (rect.height / 2)) * 45;
       target.current.y = Math.min(Math.max(rawY, -89), 89);
       target.current.x = rawX;
+    }
+
+    function onMove(e: MouseEvent) {
+      calcRotation(e.clientX, e.clientY);
+    }
+
+    function onTouch(e: TouchEvent) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      calcRotation(touch.clientX, touch.clientY);
     }
 
     function onLeave() {
@@ -46,11 +56,15 @@ export default function AurCoin({ containerRef }: AurCoinProps) {
 
     container.addEventListener("mousemove", onMove);
     container.addEventListener("mouseleave", onLeave);
+    container.addEventListener("touchmove", onTouch, { passive: false });
+    container.addEventListener("touchend", onLeave);
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       container.removeEventListener("mousemove", onMove);
       container.removeEventListener("mouseleave", onLeave);
+      container.removeEventListener("touchmove", onTouch);
+      container.removeEventListener("touchend", onLeave);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [containerRef]);

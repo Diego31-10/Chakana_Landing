@@ -43,6 +43,12 @@ export default function Header() {
           >
             Cómo funciona
           </a>
+          <Link
+            href="/contacto"
+            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
+          >
+            Contacto
+          </Link>
           <a
             href="#descarga"
             style={{ textDecoration: "none" }}
@@ -87,6 +93,13 @@ export default function Header() {
           >
             Cómo funciona
           </a>
+          <Link
+            href="/contacto"
+            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Contacto
+          </Link>
           <a
             href="#descarga"
             style={{ textDecoration: "none" }}
