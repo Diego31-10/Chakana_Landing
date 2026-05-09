@@ -49,7 +49,7 @@ export default function Hero() {
       id="que-es"
       className="pt-40 pb-24 px-4 overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12 items-end">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12 items-center">
 
         {/* Left — copy */}
         <div>
@@ -74,9 +74,9 @@ export default function Hero() {
           <Image
             src="/logo.svg"
             alt=""
-            width={200}
-            height={200}
-            className="w-full max-w-[200px] opacity-90"
+            width={300}
+            height={300 }
+            className="w-full max-w-[300px] opacity-90"
             aria-hidden="true"
           />
           <p className="font-body font-semibold text-[10px] tracking-[0.28em] uppercase text-on-surface-muted">
