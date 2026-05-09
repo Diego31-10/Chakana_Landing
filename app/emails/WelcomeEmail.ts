@@ -80,8 +80,8 @@ export function welcomeEmailHtml(email: string): string {
   <!-- FOOTER -->
   <tr>
     <td style="background:${surfaceLow};border-top:1px solid rgba(140,133,123,0.15);border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;">
-      <p style="margin:0 0 12px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;">Chakana · Cuenca, Ecuador &nbsp;·&nbsp; ${email}</p>
-      <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="display:inline-block;padding:8px 20px;background:transparent;border:1px solid rgba(140,133,123,0.35);border-radius:6px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;text-decoration:none;">Cancelar suscripción</a>
+      <p style="margin:0 0 12px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;">Chakana · Cuenca, Ecuador</p>
+      <a href="https://chakana.gavanti.org/api/unsubscribe?email=${encodeURIComponent(email)}" style="display:inline-block;padding:8px 20px;background:transparent;border:1px solid rgba(140,133,123,0.35);border-radius:6px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;text-decoration:none;">Cancelar suscripción</a>
     </td>
   </tr>
 

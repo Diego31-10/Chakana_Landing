@@ -33,7 +33,8 @@ export async function POST(req: NextRequest) {
     subject: "Ya estás en la lista · Chakana",
     html: welcomeEmailHtml(email),
     headers: {
-      "List-Unsubscribe": "<{{{RESEND_UNSUBSCRIBE_URL}}}>",
+      "List-Unsubscribe": `<https://chakana.gavanti.org/api/unsubscribe?email=${encodeURIComponent(email)}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
     },
   });
 
