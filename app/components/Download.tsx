@@ -1,11 +1,16 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { gsap } from "@/app/lib/gsap";
+
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function Download() {
   const rectRef = useRef<SVGRectElement>(null);
   const animRef = useRef<gsap.core.Timeline | null>(null);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   function runTracer() {
     const rect = rectRef.current;
@@ -50,6 +55,30 @@ export default function Download() {
     tl.to(rect, { opacity: 0, duration: 0.4, ease: "power2.in" });
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === "loading" || status === "success") return;
+    setStatus("loading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error ?? "Error al registrar");
+      }
+      setStatus("success");
+      setEmail("");
+      runTracer();
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Inténtalo de nuevo");
+    }
+  }
+
   useEffect(() => {
     function onHashChange() {
       if (window.location.hash === "#descarga") setTimeout(runTracer, 500);
@@ -68,7 +97,7 @@ export default function Download() {
   }, []);
 
   return (
-    <section id="descarga" className="pt-10 pb-24 px-4">
+    <section id="descarga" className="pt-24 pb-24 px-4">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
         <div>
@@ -83,37 +112,61 @@ export default function Download() {
             primero en saber cuándo está lista.
           </p>
 
-          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3 max-w-md">
-            <div className="relative flex-1">
-              <input
-                type="email"
-                placeholder="tu@correo.com"
-                aria-label="Correo electrónico"
-                className="w-full px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none border-0"
-                style={{ backgroundColor: "var(--surface-container-low)" }}
-              />
-              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ overflow: "visible" }}>
-                <rect
-                  ref={rectRef}
-                  x="0" y="0"
-                  width="100%" height="100%"
-                  rx="6" ry="6"
-                  fill="none"
-                  stroke="var(--primary)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeDasharray="80 9999"
-                  style={{ opacity: 0 }}
-                />
-              </svg>
+          {status === "success" ? (
+            <div className="flex items-center gap-3 max-w-md px-4 py-3.5 rounded-md" style={{ backgroundColor: "var(--surface-container-low)" }}>
+              <span className="text-secondary text-lg">✓</span>
+              <p className="font-body text-sm text-on-surface">
+                <span className="font-semibold">¡Listo!</span> Te avisamos cuando Chakana esté lista. Revisa tu correo.
+              </p>
             </div>
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-md bg-gradient-to-b from-primary to-primary-deep text-white font-body font-medium text-sm hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200 whitespace-nowrap"
-            >
-              Avisarme →
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md">
+              <div className="relative flex-1">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="tu@correo.com"
+                  aria-label="Correo electrónico"
+                  required
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none border-0 disabled:opacity-60 transition-opacity"
+                  style={{ backgroundColor: "var(--surface-container-low)" }}
+                />
+                <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ overflow: "visible" }}>
+                  <rect
+                    ref={rectRef}
+                    x="0" y="0"
+                    width="100%" height="100%"
+                    rx="6" ry="6"
+                    fill="none"
+                    stroke="var(--primary)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray="80 9999"
+                    style={{ opacity: 0 }}
+                  />
+                </svg>
+              </div>
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="px-6 py-3 rounded-md bg-gradient-to-b from-primary to-primary-deep text-white font-body font-medium text-sm hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed disabled:translate-y-0"
+              >
+                {status === "loading" ? (
+                  <span className="inline-flex items-center gap-2">
+                    <span className="inline-block w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    Enviando…
+                  </span>
+                ) : (
+                  "Avisarme →"
+                )}
+              </button>
+            </form>
+          )}
+          {status === "error" && (
+            <p className="font-body text-xs text-red-500 mt-2">{errorMsg}</p>
+          )}
 
           <div className="flex gap-4 mt-8">
             <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(140,133,123,0.20)] font-body text-xs text-on-surface-muted cursor-default select-none">
