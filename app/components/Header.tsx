@@ -43,19 +43,19 @@ export default function Header() {
           >
             Cómo funciona
           </a>
-          <Link
-            href="/contacto"
-            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
-          >
-            Contacto
-          </Link>
           <a
             href="#descarga"
             style={{ textDecoration: "none" }}
-            className="font-body font-semibold text-sm px-5 py-2 rounded-lg text-white bg-gradient-to-b from-primary to-primary-deep hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200"
+            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
           >
             Sumarse
           </a>
+          <Link
+            href="/contacto"
+            className="font-body font-semibold text-sm px-5 py-2 rounded-lg text-white bg-gradient-to-b from-primary to-primary-deep hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200"
+          >
+            Contacto
+          </Link>
         </div>
 
         {/* Mobile hamburger */}
@@ -93,6 +93,14 @@ export default function Header() {
           >
             Cómo funciona
           </a>
+          <a
+            href="#descarga"
+            style={{ textDecoration: "none" }}
+            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Sumarse
+          </a>
           <Link
             href="/contacto"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
@@ -100,14 +108,6 @@ export default function Header() {
           >
             Contacto
           </Link>
-          <a
-            href="#descarga"
-            style={{ textDecoration: "none" }}
-            className="font-body font-semibold text-sm px-5 py-2.5 rounded-lg text-white bg-gradient-to-b from-primary to-primary-deep text-center"
-            onClick={() => setOpen(false)}
-          >
-            Sumarse
-          </a>
         </div>
       </div>
     </header>
