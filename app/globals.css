@@ -29,7 +29,13 @@
 
 /* Ensure first section clears the fixed header on all screen sizes */
 main > section:first-child {
-  padding-top: max(160px, calc(68px + 3rem));
+  padding-top: max(100px, calc(68px + 1.5rem));
+}
+
+@media (min-width: 768px) {
+  main > section:first-child {
+    padding-top: max(160px, calc(68px + 3rem));
+  }
 }
 
 

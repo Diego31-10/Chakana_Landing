@@ -69,13 +69,13 @@ export default function Hero() {
 
         </div>
 
-        {/* Right — Chakana mark */}
-        <div className="hero-mark flex flex-col items-center gap-6 relative">
+        {/* Right — Chakana mark (hidden on mobile) */}
+        <div className="hero-mark hidden md:flex flex-col items-center gap-6 relative">
           <Image
             src="/logo.svg"
             alt=""
             width={300}
-            height={300 }
+            height={300}
             className="w-full max-w-[300px] opacity-90"
             aria-hidden="true"
           />

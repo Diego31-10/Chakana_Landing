@@ -188,7 +188,7 @@ export default function Download() {
           </div>
         </div>
 
-        <div ref={coinCardRef} className="hidden md:flex flex-col items-center justify-center gap-2 py-8 px-6 bg-background relative overflow-hidden">
+        <div ref={coinCardRef} className="flex flex-col items-center justify-center gap-2 py-8 px-6 bg-background relative overflow-hidden">
           <AurCoin containerRef={coinCardRef} />
         </div>
 
