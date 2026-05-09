@@ -3,12 +3,16 @@
 import Image from "next/image";
 
 const TECHS = [
-  { name: "Vercel",     logo: "/vercel-seeklogo.svg",       width: 100, height: 32 },
-  { name: "Solana",     logo: "/solanaLogo.svg",            width: 120, height: 32 },
-  { name: "Next.js",    logo: "/next.svg",                  width: 100, height: 32 },
-  { name: "ElevenLabs", logo: "/elevenlabs-logo-black.svg", width: 138, height: 32 },
-  { name: "Dev3pack",   logo: "/Dev3pack.svg",              width: 120, height: 32 },
+  { name: "Vercel",     logo: "/vercel-seeklogo.svg",       nativeW: 512,  nativeH: 116 },
+  { name: "Solana",     logo: "/solanaLogo.svg",            nativeW: 646,  nativeH:  96, scale: 1.3 },
+  { name: "Stripe",     logo: "/stripe-black.svg",          nativeW: 360,  nativeH: 151, scale: 0.75 },
+  { name: "ElevenLabs", logo: "/elevenlabs-logo-black.svg", nativeW: 694,  nativeH:  90, scale: 1.3 },
+  { name: "Dev3pack",   logo: "/Dev3pack.svg",              nativeW: 1125, nativeH: 500, scale: 1.6 },
 ];
+
+// Fixed bounding box — every logo fits inside this space via object-fit: contain
+const BOX_W = 120;
+const BOX_H = 45;
 
 export default function TechStrip() {
   return (
@@ -36,7 +40,7 @@ export default function TechStrip() {
           margin: "0 auto",
           maskImage:
             "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
-          WebkitMaskImage:
+            WebkitMaskImage:
             "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
           overflow: "hidden",
         }}
@@ -53,9 +57,15 @@ export default function TechStrip() {
               <Image
                 src={tech.logo}
                 alt={tech.name}
-                width={tech.width}
-                height={tech.height}
-                style={{ objectFit: "contain", opacity: 0.5, filter: "grayscale(1)" }}
+                width={tech.nativeW}
+                height={tech.nativeH}
+                style={{
+                  width: BOX_W * (tech.scale ?? 1),
+                  height: BOX_H * (tech.scale ?? 1),
+                  objectFit: "contain",
+                  opacity: 0.5,
+                  filter: "grayscale(1)",
+                }}
               />
             </div>
           ))}
@@ -70,9 +80,15 @@ export default function TechStrip() {
               <Image
                 src={tech.logo}
                 alt=""
-                width={tech.width}
-                height={tech.height}
-                style={{ objectFit: "contain", opacity: 0.5, filter: "grayscale(1)" }}
+                width={tech.nativeW}
+                height={tech.nativeH}
+                style={{
+                  width: BOX_W * (tech.scale ?? 1),
+                  height: BOX_H * (tech.scale ?? 1),
+                  objectFit: "contain",
+                  opacity: 0.5,
+                  filter: "grayscale(1)",
+                }}
               />
             </div>
           ))}
