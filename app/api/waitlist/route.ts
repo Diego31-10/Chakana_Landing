@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
-import { WelcomeEmail } from "@/app/emails/WelcomeEmail";
+import { welcomeEmailHtml } from "@/app/emails/WelcomeEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
     });
 
     await resend.emails.send({
-      from: `Chakana <${process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev"}>`,
+      from: "Chakana <noreply@chakana.gavanti.org>",
       to: email,
       subject: "Ya estás en la lista · Chakana",
-      react: WelcomeEmail({ email }),
+      html: welcomeEmailHtml(email),
     });
 
     return NextResponse.json({ success: true });
