@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { gsap, useGSAP } from "@/app/lib/gsap";
 
 export default function Header() {
@@ -23,12 +24,12 @@ export default function Header() {
       className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl flex items-center justify-between px-6 py-3 rounded-xl bg-surface/80 backdrop-blur-[12px] shadow-[0_12px_32px_rgba(38,26,22,0.08)] border border-[rgba(140,133,123,0.12)]"
     >
       {/* Brand */}
-      <a href="#" style={{ textDecoration: "none" }} className="flex items-center gap-3">
+      <Link href="/" className="flex items-center gap-3">
         <Image src="/logo.svg" alt="Chakana" width={32} height={32} />
         <span className="font-display font-bold text-sm tracking-[0.32em] text-on-surface uppercase">
           CHAKANA
         </span>
-      </a>
+      </Link>
 
       {/* Right side — nav + CTA */}
       <div className="hidden md:flex items-center gap-6">
