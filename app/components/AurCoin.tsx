@@ -1,0 +1,225 @@
+"use client";
+
+import { useRef, useEffect, RefObject } from "react";
+
+const DEPTH = 18;
+const LAYERS = 12;
+const IDLE = { x: 0, y: 0 };
+
+interface AurCoinProps {
+  containerRef: RefObject<HTMLDivElement | null>;
+}
+
+export default function AurCoin({ containerRef }: AurCoinProps) {
+  const coinRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const current = useRef({ ...IDLE });
+  const target = useRef({ ...IDLE });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const coin = coinRef.current;
+    if (!container || !coin) return;
+
+    const LERP = 0.045;
+
+    function onMove(e: MouseEvent) {
+      const rect = container!.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const rawY = ((e.clientX - cx) / (rect.width / 2)) * 60;
+      const rawX = -((e.clientY - cy) / (rect.height / 2)) * 45;
+      target.current.y = Math.min(Math.max(rawY, -89), 89);
+      target.current.x = rawX;
+    }
+
+    function onLeave() {
+      target.current = { ...IDLE };
+    }
+
+    function tick() {
+      current.current.x += (target.current.x - current.current.x) * LERP;
+      current.current.y += (target.current.y - current.current.y) * LERP;
+      coin!.style.transform = `rotateX(${current.current.x}deg) rotateY(${current.current.y}deg)`;
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    container.addEventListener("mousemove", onMove);
+    container.addEventListener("mouseleave", onLeave);
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("mouseleave", onLeave);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [containerRef]);
+
+  return (
+    <>
+      <style>{`
+        .aur-scene {
+          width: 220px;
+          height: 220px;
+          perspective: 600px;
+        }
+
+        .aur-coin {
+          width: 220px;
+          height: 220px;
+          position: relative;
+          transform-style: preserve-3d;
+          will-change: transform;
+        }
+
+        .aur-layer {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+
+        .aur-face {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          /* Rim darker, field lighter — like a struck coin */
+          background:
+            radial-gradient(circle at 42% 35%,
+              #FFF0A0 0%,
+              #E8B820 20%,
+              #C99008 42%,
+              #A87000 58%,
+              #7A4E00 74%,
+              #4E2E00 88%,
+              #2E1600 100%
+            );
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 0;
+          overflow: hidden;
+          transform: translateZ(${DEPTH / 2}px);
+          box-shadow:
+            inset 0 -8px 20px rgba(0,0,0,0.45),
+            inset 0 6px 14px rgba(255,240,120,0.25);
+        }
+
+        /* Raised rim — bright highlight on top-left, shadow bottom-right */
+        .aur-face::before {
+          content: "";
+          position: absolute;
+          inset: 6px;
+          border-radius: 50%;
+          border: 7px solid transparent;
+          background: conic-gradient(
+            from 200deg,
+            rgba(255,245,160,0.95) 0deg,
+            rgba(200,140,20,0.6)   70deg,
+            rgba(80,40,0,0.7)      140deg,
+            rgba(40,18,0,0.85)     200deg,
+            rgba(80,40,0,0.6)      260deg,
+            rgba(200,140,20,0.55)  310deg,
+            rgba(255,245,160,0.95) 360deg
+          ) border-box;
+          -webkit-mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+          pointer-events: none;
+        }
+
+        /* Specular hotspot — top-left */
+        .aur-face::after {
+          content: "";
+          position: absolute;
+          top: 8%;
+          left: 14%;
+          width: 32%;
+          height: 24%;
+          border-radius: 50%;
+          background: radial-gradient(ellipse, rgba(255,255,230,0.75) 0%, transparent 65%);
+          pointer-events: none;
+        }
+
+        .aur-logo-wrap {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 110px;
+          height: 108px;
+        }
+
+        .aur-logo {
+          display: block;
+          filter: brightness(0) saturate(100%) invert(18%) sepia(80%) saturate(900%) hue-rotate(340deg) brightness(75%);
+          opacity: 0.85;
+          /* Nudge left to visually center the asymmetric SVG */
+          transform: translateX(-2px);
+        }
+
+        .aur-text {
+          font-family: "Raleway", sans-serif;
+          font-weight: 800;
+          font-size: 18px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          /* Deep engraved amber — same dark gold family */
+          color: #7A2218;
+          text-shadow:
+            0 1px 0 rgba(255,200,60,0.3),
+            0 -1px 0 rgba(60,10,5,0.4);
+          line-height: 1;
+          position: relative;
+          z-index: 2;
+          user-select: none;
+          margin-top: 14px;
+        }
+      `}</style>
+
+      <div className="aur-scene" aria-hidden="true">
+        <div className="aur-coin" ref={coinRef}>
+          {Array.from({ length: LAYERS }, (_, i) => {
+            const z = -DEPTH / 2 + (i / (LAYERS - 1)) * DEPTH;
+            const l = 25 + Math.round(12 * (i / (LAYERS - 1)));
+            return (
+              <div
+                key={i}
+                className="aur-layer"
+                style={{
+                  transform: `translateZ(${z}px)`,
+                  background: `radial-gradient(ellipse at 50% 50%, hsl(38,72%,${l + 6}%) 0%, hsl(38,65%,${l}%) 100%)`,
+                }}
+              />
+            );
+          })}
+          <div className="aur-face">
+            <div className="aur-logo-wrap">
+            <svg className="aur-logo" width="110" height="108" viewBox="0 0 112 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clipPath="url(#cc)">
+                <path d="M85.7736 51.1599C89.6303 50.7463 94.1948 51.2196 98.1145 51.0085C112.346 50.2422 109.892 63.2045 109.911 72.7468C107.594 72.8694 104.344 72.7546 101.92 72.7607C99.327 72.767 95.5179 72.8949 93.021 72.6969C93.4885 77.6059 92.9866 85.0915 93.183 90.4194C88.0536 90.0494 80.3915 90.8362 75.6351 90.3358C75.7794 96.3341 75.5076 102.433 75.7472 108.465C70.8369 108.19 63.4429 108.253 58.6109 108.443C60.8162 106.497 61.999 104.581 62.9609 101.839C65.0761 101.821 67.1915 101.853 69.3052 101.936C69.0544 96.2638 69.2784 89.7204 69.1895 83.9046C70.7337 83.9786 72.5692 83.9419 74.1361 83.95C78.2551 83.9874 82.4268 83.909 86.5612 83.928L86.5019 66.1884C91.4026 66.5315 98.2031 66.2324 103.346 66.3161C103.245 64.3336 103.68 59.9905 102.414 58.46C102.137 58.1254 100.952 57.7111 100.48 57.7025C96.1312 57.6236 91.7521 57.6569 87.3972 57.6448C82.1316 57.6218 81.2326 61.7886 79.2053 65.6167C78.1928 67.5142 76.9385 69.2724 75.4739 70.8475C72.7105 73.7946 69.2066 76.0915 65.3444 77.3041C64.9539 77.4264 62.4654 78.3107 62.1845 77.8528C60.8444 75.6673 59.6507 73.9361 57.855 72.104C64.2473 71.5751 70.3849 68.493 73.2545 62.6424C76.3282 56.3761 77.8836 52.343 85.7736 51.1599Z" fill="white"/>
+                <path d="M40.0508 55.0833C40.444 55.4784 40.4429 57.2925 40.6134 58.0204C41.349 61.1605 42.6126 63.504 44.6066 65.939C48.3462 70.5058 53.1856 70.4479 57.2429 74.5083C58.8901 76.1685 60.0658 78.2375 60.6493 80.5028C61.5109 83.928 60.9592 92.4642 61.1379 96.3451C61.3344 99.9564 60.9039 103.042 58.1447 105.685C54.228 109.435 45.4079 108.281 40.125 108.283C40.116 102.357 40.0232 96.1824 40.1451 90.2765C38.5002 90.4252 36.4128 90.3285 34.7124 90.3461C30.7344 90.3871 26.6956 90.2574 22.7253 90.4201C23.2163 85.0021 22.3728 77.9122 22.9312 72.7034L6.13087 72.7235C5.9594 69.7508 6.04884 66.1255 6.05379 63.1001C6.04287 60.5818 6.04584 58.0634 6.06267 55.5451C7.94654 57.6871 9.64682 58.6291 12.3006 59.3891C12.5473 60.9602 12.4567 64.5769 12.4425 66.3142C13.9767 66.1982 16.8763 66.2998 18.501 66.3072C22.0564 66.3229 25.6119 66.3147 29.1671 66.2824C28.8841 71.899 29.4916 78.6514 29.2053 84.0291C31.3478 83.8723 34.2937 83.9764 36.4943 83.9859C39.8449 84.002 43.1955 83.9647 46.5448 83.8731C46.257 89.0925 46.5737 96.529 46.5017 101.979C48.554 101.713 50.7218 102.18 52.7445 101.714C53.2787 101.591 53.8975 101.333 54.1816 100.845C55.1854 99.1211 54.8473 84.2174 54.1502 81.7022C53.0894 77.8763 48.7868 76.8213 45.7045 75.0739C39.6171 71.6225 35.975 65.6371 34.1517 59.0433C36.3432 57.9822 38.1281 56.553 40.0508 55.0833Z" fill="white"/>
+                <path d="M55.8139 43.7567C61.6764 42.5863 67.3757 46.3966 68.5349 52.2613C69.6941 58.126 65.873 63.818 60.0061 64.9661C54.155 66.1111 48.4816 62.3025 47.3255 56.4535C46.1694 50.6046 49.9671 44.9239 55.8139 43.7567ZM58.8825 61.5361C62.8581 60.9833 65.6236 57.2994 65.0446 53.3274C64.4656 49.3555 60.7635 46.6144 56.7954 47.2196C52.8642 47.8192 50.1541 51.4795 50.7278 55.4146C51.3014 59.3496 54.9437 62.0838 58.8825 61.5361Z" fill="white"/>
+                <path d="M40.1111 0H57.1907C53.8429 3.84019 54.9373 2.82159 52.7094 6.74688C50.6557 6.6481 48.5732 6.66587 46.4923 6.5688C46.8999 11.956 46.1262 19.9371 46.6631 24.9095L35.7832 24.9018C33.7991 24.9023 31.1273 24.9761 29.1974 24.8135C29.5523 29.5911 29.2984 37.5331 29.3293 42.6093C26.1961 42.7023 22.7899 42.6005 19.6315 42.6397C17.7693 42.6628 14.1417 42.7184 12.4297 42.4757C12.659 44.7387 12.4018 47.0318 12.6583 49.2848C12.8662 51.1876 16.399 51.2047 17.8453 51.1454C22.033 50.9738 26.6771 51.5549 30.756 50.7067C33.6679 50.0824 34.5844 47.4608 35.658 45.0451C39.083 37.3375 45.2298 32.2435 53.5888 30.6453C55.0049 33.3263 55.5992 34.6442 58.0565 36.484C51.2527 37.3829 45.0264 39.8252 42.1475 46.7318C39.4275 53.9424 34.5516 58.2845 26.5066 57.5965C21.2711 57.1488 12.8469 59.1019 8.75034 55.162C7.62476 54.0745 6.80922 52.7067 6.38753 51.1994C5.65217 48.5505 6.0434 39.3341 5.98218 35.9603C11.0496 36.2277 17.7767 35.5644 22.7404 36.1154C22.642 30.2308 22.6984 24.1983 22.692 18.3025C28.3379 18.527 34.3969 18.0795 40.1633 18.3424C39.9205 16.2564 40.0105 12.3719 40.0306 10.1223C40.0592 6.92283 39.935 3.1268 40.1111 0Z" fill="white"/>
+                <path d="M62.8281 0H75.6299C75.7552 5.33411 75.7919 13.1166 75.638 18.414C80.8157 18.6337 87.8045 18.5895 92.9968 18.4561C93.0833 22.9941 92.9888 27.5515 93.0481 32.0914C93.0642 33.3551 93.0269 34.6537 93.2166 35.904C95.9502 36.3623 106.889 36.2187 109.764 35.9229C109.694 41.6975 109.833 47.5634 109.682 53.312C103.671 47.0021 103.078 53.0348 103.329 42.4484C101.574 42.6934 98.7914 42.622 96.9598 42.6178C93.506 42.5876 90.0516 42.5904 86.5978 42.6266C86.6198 36.9084 86.3905 30.4837 86.5605 24.8927C80.8054 24.8169 75.0497 24.8253 69.2946 24.918C69.1719 23.1196 69.2415 20.4661 69.2396 18.609L69.2673 6.49067C67.3862 6.71524 65.4607 6.24833 63.566 6.54675C62.992 6.63714 62.1669 6.8315 61.819 7.33785C60.6187 9.08502 60.827 23.0577 61.2947 25.6332C62.3246 31.3047 67.4589 31.5925 71.6515 34.527C76.5121 37.929 80.6464 43.9123 81.6854 49.7993C79.061 50.9247 77.551 52.0381 75.4959 54.0428C75.2907 52.3696 75.1142 50.6822 74.6387 49.0592C71.3011 37.6706 60.7621 39.1648 56.4175 31.2646C55.6654 29.8921 55.1506 28.4023 54.8948 26.8583C54.4546 24.0917 54.4319 9.29756 55.1618 6.82796C55.9279 4.21618 57.8132 2.07886 60.309 0.992772C61.1008 0.64697 62.0147 0.452789 62.7342 0.0532738L62.8281 0Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="cc">
+                  <rect width="112" height="109.871" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

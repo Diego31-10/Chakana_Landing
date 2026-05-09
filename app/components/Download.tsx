@@ -2,11 +2,13 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "@/app/lib/gsap";
+import AurCoin from "./AurCoin";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Download() {
   const rectRef = useRef<SVGRectElement>(null);
+  const coinCardRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<gsap.core.Timeline | null>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -178,7 +180,7 @@ export default function Download() {
             </span>
             <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(140,133,123,0.20)] font-body text-xs text-on-surface-muted cursor-default select-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M3.18 23.76c.3.17.64.24.99.18l12.47-7.2-2.79-2.79-10.67 9.81zm-1.34-20.9C1.6 3.2 1.5 3.6 1.5 4.04v15.92c0 .44.1.84.34 1.18l.06.06 8.92-8.92v-.21L1.78 2.8l.06.06zm18.04 9.46l-2.52-1.46-3.14 3.14 3.14 3.14 2.54-1.47c.72-.42.72-1.1 0-1.52l-.02.17zm-17.3 10.12l.06-.03 10.3-10.3-2.79-2.79L1.84 20.4l.74 2.04z"/>
+                <path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/>
               </svg>
               Google Play
               <span style={{ opacity: 0.5 }}>(próximamente)</span>
@@ -186,21 +188,8 @@ export default function Download() {
           </div>
         </div>
 
-        <div className="hidden md:flex flex-col items-center justify-center gap-6 py-12 px-8 bg-surface rounded-md relative overflow-hidden">
-          <div className="font-display font-bold text-[80px] leading-none tracking-[-0.04em] text-primary/10 select-none" aria-hidden="true">
-            $AUR
-          </div>
-          <p className="font-display font-semibold text-on-surface text-xl text-center leading-tight">
-            El crédito que<br />nace en el barrio<br />y ahí se queda.
-          </p>
-          <p className="font-body text-on-surface-muted text-xs text-center tracking-[0.12em] uppercase">
-            Aurios · Crédito circular
-          </p>
-          <div
-            className="absolute bottom-0 right-0 w-12 h-12 bg-secondary/20"
-            aria-hidden="true"
-            style={{ clipPath: "polygon(100% 0, 0 100%, 100% 100%)" }}
-          />
+        <div ref={coinCardRef} className="hidden md:flex flex-col items-center justify-center gap-2 py-8 px-6 bg-background relative overflow-hidden">
+          <AurCoin containerRef={coinCardRef} />
         </div>
 
       </div>

@@ -20,6 +20,12 @@ export default function Footer() {
               <div className="font-body text-[10px] text-on-surface-muted opacity-60 mt-1">
                 © {new Date().getFullYear()} Gavanti. Todos los derechos reservados.
               </div>
+              <a
+                href="mailto:support@gavanti.org"
+                className="font-body text-[10px] text-on-surface-muted opacity-60 hover:opacity-100 transition-opacity mt-0.5 block"
+              >
+                support@gavanti.org
+              </a>
             </div>
           </div>
 
