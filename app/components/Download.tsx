@@ -188,7 +188,7 @@ export default function Download() {
 
         <div className="hidden md:flex flex-col items-center justify-center gap-6 py-12 px-8 bg-surface rounded-md relative overflow-hidden">
           <div className="font-display font-bold text-[80px] leading-none tracking-[-0.04em] text-primary/10 select-none" aria-hidden="true">
-            $A
+            $AUR
           </div>
           <p className="font-display font-semibold text-on-surface text-xl text-center leading-tight">
             El crédito que<br />nace en el barrio<br />y ahí se queda.
