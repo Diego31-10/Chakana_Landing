@@ -36,23 +36,21 @@ export default function Header() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
-          <a
-            href="#como-funciona"
-            style={{ textDecoration: "none" }}
+          <Link
+            href="/#como-funciona"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
           >
             Cómo funciona
-          </a>
-          <a
-            href="#descarga"
-            style={{ textDecoration: "none" }}
+          </Link>
+          <Link
+            href="/#descarga"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
           >
             Sumarse
-          </a>
+          </Link>
           <Link
             href="/contacto"
-            className="font-body font-semibold text-sm px-5 py-2 rounded-lg text-white bg-gradient-to-b from-primary to-primary-deep hover:-translate-y-px hover:shadow-soil-sm transition-all duration-200"
+            className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors duration-200"
           >
             Contacto
           </Link>
@@ -85,22 +83,20 @@ export default function Header() {
         style={{ maxHeight: open ? "200px" : "0px" }}
       >
         <div className="flex flex-col px-6 pb-4 gap-3 border-t border-[rgba(140,133,123,0.12)] pt-3">
-          <a
-            href="#como-funciona"
-            style={{ textDecoration: "none" }}
+          <Link
+            href="/#como-funciona"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
             onClick={() => setOpen(false)}
           >
             Cómo funciona
-          </a>
-          <a
-            href="#descarga"
-            style={{ textDecoration: "none" }}
+          </Link>
+          <Link
+            href="/#descarga"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
             onClick={() => setOpen(false)}
           >
             Sumarse
-          </a>
+          </Link>
           <Link
             href="/contacto"
             className="font-body font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"

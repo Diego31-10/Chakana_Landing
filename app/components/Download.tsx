@@ -8,53 +8,145 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export default function Download() {
   const rectRef = useRef<SVGRectElement>(null);
+  const glowRef = useRef<SVGRectElement>(null);
   const coinCardRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<gsap.core.Timeline | null>(null);
+  const userFocused = useRef(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  function runTracer() {
+  // Serpiente recorre el perímetro ida+vuelta, luego llena el borde y glow
+  function runTracer(onDone?: () => void) {
     const rect = rectRef.current;
+    const glow = glowRef.current;
     if (!rect) return;
     if (animRef.current) animRef.current.kill();
 
     const P = rect.getTotalLength();
     const dash = 60;
-
-    // ida: dashoffset va de 0 → -(P - dash)
-    // la cabeza arranca en 0 y llega exactamente al final (P)
-    // vuelta: dashoffset vuelve de -(P - dash) → 0
-    // con gap = 9999 la línea NUNCA da la vuelta porque dash << P << 9999
     const end = -(P - dash);
 
     gsap.set(rect, { opacity: 0 });
     rect.setAttribute("stroke-dasharray", `${dash} 9999`);
     rect.setAttribute("stroke-dashoffset", "0");
 
-    const tl = gsap.timeline();
+    if (glow) {
+      gsap.set(glow, { opacity: 0 });
+      glow.setAttribute("stroke-dasharray", `${dash} 9999`);
+      glow.setAttribute("stroke-dashoffset", "0");
+    }
+
+    const tl = gsap.timeline({ onComplete: onDone });
     animRef.current = tl;
 
+    // Aparece
     tl.to(rect, { opacity: 1, duration: 0.1, ease: "none" });
+    if (glow) tl.to(glow, { opacity: 0.5, duration: 0.1, ease: "none" }, "<");
 
-    // Ida: 0 → end
+    // Ida: serpiente avanza
     tl.to(rect, {
       attr: { "stroke-dashoffset": end },
       duration: 1.5,
       ease: "power1.inOut",
     }, "<");
+    if (glow) {
+      tl.to(glow, {
+        attr: { "stroke-dashoffset": end },
+        duration: 1.5,
+        ease: "power1.inOut",
+      }, "<");
+    }
 
     // Pausa
     tl.to({}, { duration: 0.2 });
 
-    // Vuelta: end → 0
+    // Vuelta: serpiente regresa
     tl.to(rect, {
       attr: { "stroke-dashoffset": 0 },
       duration: 1.5,
       ease: "power1.inOut",
     });
+    if (glow) {
+      tl.to(glow, {
+        attr: { "stroke-dashoffset": 0 },
+        duration: 1.5,
+        ease: "power1.inOut",
+      }, "<");
+    }
 
-    tl.to(rect, { opacity: 0, duration: 0.4, ease: "power2.in" });
+    // Rellena el borde completo
+    tl.to(rect, {
+      attr: { "stroke-dasharray": `${P} 0` },
+      duration: 0.3,
+      ease: "expo.out",
+    });
+    if (glow) {
+      tl.to(glow, {
+        attr: { "stroke-dasharray": `${P} 0` },
+        duration: 0.3,
+        ease: "expo.out",
+      }, "<");
+    }
+
+    // Flash de glow
+    if (glow) {
+      tl.to(glow, { opacity: 1, duration: 0.1, ease: "power3.in" });
+      tl.to(glow, { opacity: 0, duration: 0.5, ease: "power2.out" });
+    }
+
+    // Fade out del trazo nítido
+    tl.to(rect, { opacity: 0, duration: 0.4, ease: "power2.in" }, "<0.2");
+  }
+
+  function stopAll() {
+    userFocused.current = true;
+    const rect = rectRef.current;
+    const glow = glowRef.current;
+    if (animRef.current) {
+      animRef.current.kill();
+      animRef.current = null;
+    }
+    if (rect) gsap.to(rect, { opacity: 0, duration: 0.3, ease: "power2.in" });
+    if (glow) gsap.to(glow, { opacity: 0, duration: 0.3, ease: "power2.in" });
+  }
+
+  // Loop permanente: arranca al montar, para al hacer focus/click en el input
+  function runLoop() {
+    const rect = rectRef.current;
+    if (!rect) return;
+    if (animRef.current) animRef.current.kill();
+
+    const P = rect.getTotalLength();
+    const dash = 60;
+    const end = -(P - dash);
+
+    rect.setAttribute("stroke-dasharray", `${dash} 9999`);
+    rect.setAttribute("stroke-dashoffset", "0");
+    gsap.set(rect, { opacity: 1 });
+
+    // Una iteración completa sin gap entre repeticiones
+    const tl = gsap.timeline({
+      repeat: -1,
+      onRepeat: () => {
+        // Resetea sin parpadeo al volver a empezar
+        rect.setAttribute("stroke-dashoffset", "0");
+      },
+    });
+    animRef.current = tl;
+
+    tl.to(rect, {
+      attr: { "stroke-dashoffset": end },
+      duration: 1.6,
+      ease: "power1.inOut",
+    });
+    tl.to({}, { duration: 0.15 });
+    tl.to(rect, {
+      attr: { "stroke-dashoffset": 0 },
+      duration: 1.6,
+      ease: "power1.inOut",
+    });
+    tl.to({}, { duration: 0.15 });
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -72,25 +164,65 @@ export default function Download() {
         const data = await res.json();
         throw new Error(data.error ?? "Error al registrar");
       }
-      setStatus("success");
       setEmail("");
-      runTracer();
+      runTracer(() => setTimeout(() => setStatus("success"), 100));
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Inténtalo de nuevo");
     }
   }
 
+  function runSumarse() {
+    const glow = glowRef.current;
+    const rect = rectRef.current;
+    if (!glow || !rect) return;
+
+    const P = rect.getTotalLength();
+
+    // Para la serpiente
+    if (animRef.current) animRef.current.kill();
+    gsap.set(rect, { opacity: 0 });
+
+    // Marco completo nítido + glow sutil encima
+    rect.setAttribute("stroke-dasharray", `${P} 0`);
+    rect.setAttribute("stroke-dashoffset", "0");
+    glow.setAttribute("stroke-dasharray", `${P} 0`);
+    glow.setAttribute("stroke-dashoffset", "0");
+
+    gsap.timeline({
+      onComplete: () => {
+        gsap.set([rect, glow], { opacity: 0 });
+        if (!userFocused.current) runLoop();
+      },
+    })
+      // Aparece el marco con glow
+      .to(rect, { opacity: 1, duration: 0.35, ease: "power2.out" })
+      .to(glow, { opacity: 0.4, duration: 0.35, ease: "power2.out" }, "<")
+      // Se queda 1.5s
+      .to({}, { duration: 1.5 })
+      // Fade out
+      .to(rect, { opacity: 0, duration: 0.4, ease: "power2.in" })
+      .to(glow, { opacity: 0, duration: 0.4, ease: "power2.in" }, "<");
+  }
+
   useEffect(() => {
+    runLoop();
+
+    const input = document.querySelector<HTMLInputElement>("#descarga input[type='email']");
+    input?.addEventListener("focus", stopAll, { once: true });
+    input?.addEventListener("click", stopAll, { once: true });
+
     function onHashChange() {
-      if (window.location.hash === "#descarga") setTimeout(runTracer, 500);
+      if (window.location.hash === "#descarga") setTimeout(runSumarse, 500);
     }
     function onLinkClick(e: MouseEvent) {
       const a = (e.target as HTMLElement).closest("a");
-      if (a?.getAttribute("href") === "#descarga") setTimeout(runTracer, 300);
+      const href = a?.getAttribute("href") ?? "";
+      if (href === "#descarga" || href === "/#descarga") setTimeout(runSumarse, 400);
     }
     window.addEventListener("hashchange", onHashChange);
     document.addEventListener("click", onLinkClick);
+
     return () => {
       window.removeEventListener("hashchange", onHashChange);
       document.removeEventListener("click", onLinkClick);
@@ -135,7 +267,23 @@ export default function Download() {
                   className="w-full px-4 py-3 rounded-md font-body text-sm text-on-surface placeholder:text-on-surface-muted focus:outline-none border-0 disabled:opacity-60 transition-opacity"
                   style={{ backgroundColor: "var(--surface-container-low)" }}
                 />
-                <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ overflow: "visible" }}>
+                <svg
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  style={{ overflow: "visible" }}
+                >
+                  {/* Glow difuso detrás */}
+                  <rect
+                    ref={glowRef}
+                    x="0" y="0"
+                    width="100%" height="100%"
+                    rx="6" ry="6"
+                    fill="none"
+                    stroke="var(--primary)"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    style={{ opacity: 0, filter: "blur(5px)" }}
+                  />
+                  {/* Trazo nítido encima */}
                   <rect
                     ref={rectRef}
                     x="0" y="0"
@@ -143,9 +291,9 @@ export default function Download() {
                     rx="6" ry="6"
                     fill="none"
                     stroke="var(--primary)"
-                    strokeWidth="3"
+                    strokeWidth="2"
                     strokeLinecap="round"
-                    strokeDasharray="80 9999"
+                    strokeDasharray="60 9999"
                     style={{ opacity: 0 }}
                   />
                 </svg>
