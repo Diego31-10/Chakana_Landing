@@ -122,8 +122,11 @@ export function welcomeEmailHtml(email: string): string {
       </table>
 
       <!-- Sub-footer -->
-      <p style="margin:24px 0 0;color:${onMuted};font-size:11px;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+      <p style="margin:24px 0 4px;color:${onMuted};font-size:11px;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
         Recibiste este correo porque te registraste en chakana.gavanti.org
+      </p>
+      <p style="margin:0;font-size:11px;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+        <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:${onMuted};text-decoration:underline;">Cancelar suscripción</a>
       </p>
 
     </td></tr></tbody>

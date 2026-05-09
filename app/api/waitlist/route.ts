@@ -32,6 +32,9 @@ export async function POST(req: NextRequest) {
     to: email,
     subject: "Ya estás en la lista · Chakana",
     html: welcomeEmailHtml(email),
+    headers: {
+      "List-Unsubscribe": "<{{{RESEND_UNSUBSCRIBE_URL}}}>",
+    },
   });
 
   if (emailError) {
