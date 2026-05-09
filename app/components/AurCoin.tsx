@@ -30,7 +30,7 @@ export default function AurCoin({ containerRef }: AurCoinProps) {
       const rawY = ((clientX - cx) / (rect.width / 2)) * 60;
       const rawX = -((clientY - cy) / (rect.height / 2)) * 45;
       target.current.y = Math.min(Math.max(rawY, -89), 89);
-      target.current.x = rawX;
+      target.current.x = Math.min(Math.max(rawX, -45), 45);
     }
 
     function onMove(e: MouseEvent) {
