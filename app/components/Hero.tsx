@@ -74,9 +74,9 @@ export default function Hero() {
           <Image
             src="/logo.svg"
             alt=""
-            width={320}
-            height={320}
-            className="w-full max-w-[320px] opacity-90"
+            width={200}
+            height={200}
+            className="w-full max-w-[200px] opacity-90"
             aria-hidden="true"
           />
           <p className="font-body font-semibold text-[10px] tracking-[0.28em] uppercase text-on-surface-muted">
