@@ -127,14 +127,6 @@ export default function HowItWorks() {
                 {step.body}
               </p>
 
-              {/* Andean edge accent on the featured card */}
-              {step.accent === "primary" && (
-                <div
-                  className="absolute top-0 right-0 w-6 h-6 bg-secondary/30 rounded-br-md"
-                  aria-hidden="true"
-                  style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
-                />
-              )}
             </article>
           ))}
         </div>
