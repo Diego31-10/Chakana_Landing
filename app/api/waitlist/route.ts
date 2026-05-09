@@ -12,23 +12,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email inválido" }, { status: 400 });
   }
 
-  try {
-    await resend.contacts.create({
-      email,
-      audienceId: AUDIENCE_ID,
-      unsubscribed: false,
-    });
+  // 1 — Guardar en Audience (crítico: si falla, no enviamos el email)
+  const { data: contact, error: contactError } = await resend.contacts.create({
+    email,
+    audienceId: AUDIENCE_ID,
+    unsubscribed: false,
+  });
 
-    await resend.emails.send({
-      from: "Chakana <noreply@chakana.gavanti.org>",
-      to: email,
-      subject: "Ya estás en la lista · Chakana",
-      html: welcomeEmailHtml(email),
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Error al registrar" }, { status: 500 });
+  if (contactError) {
+    console.error("[waitlist] contacts.create error:", contactError);
+    return NextResponse.json({ error: "No se pudo registrar el correo" }, { status: 500 });
   }
+
+  console.log("[waitlist] contact saved:", contact);
+
+  // 2 — Enviar email de bienvenida (no bloqueante: si falla, igual devolvemos éxito)
+  const { error: emailError } = await resend.emails.send({
+    from: "Chakana <noreply@chakana.gavanti.org>",
+    to: email,
+    subject: "Ya estás en la lista · Chakana",
+    html: welcomeEmailHtml(email),
+  });
+
+  if (emailError) {
+    console.error("[waitlist] emails.send error:", emailError);
+  }
+
+  return NextResponse.json({ success: true });
 }
