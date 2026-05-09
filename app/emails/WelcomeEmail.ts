@@ -1,136 +1,93 @@
-/* Tokens del design system Chakana — Ancestral Modernism */
-const primary       = "#A63A2F";
-const primaryDeep   = "#86231A";
-const secondary     = "#3AAFA9";
-const background    = "#F5F0EB"; /* Crema — page canvas */
-const surface       = "#FDFAF7"; /* Blanco Cálido */
-const surfaceLow    = "#F8F3EE";
-const onSurface     = "#2E2A26";
-const onVariant     = "#6B645C";
-const onMuted       = "#9A938A";
-const outline       = "rgba(140,133,123,0.15)";
-
-const features = [
-  { color: primary,   title: "Tambos participantes",      desc: "Paga en locales del barrio con la app." },
-  { color: secondary, title: "Aurios — crédito circular", desc: "Gana crédito y úsalo en tu próxima visita." },
-  { color: primary,   title: "Reseñas en cadena",         desc: "Tu voz queda grabada de forma permanente." },
-];
+const primary     = "#A63A2F";
+const primaryDeep = "#86231A";
+const secondary   = "#3AAFA9";
+const background  = "#F5F0EB";
+const surface     = "#FDFAF7";
+const surfaceLow  = "#F8F3EE";
+const onSurface   = "#2E2A26";
+const onVariant   = "#6B645C";
+const onMuted     = "#9A938A";
 
 export function welcomeEmailHtml(email: string): string {
-  const featureRows = features.map(f => `
-    <tr>
-      <td style="padding-bottom:20px;vertical-align:top;">
-        <table cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-          <td style="width:32px;vertical-align:top;padding-top:4px;">
-            <div style="width:8px;height:8px;border-radius:2px;background-color:${f.color};"></div>
-          </td>
-          <td>
-            <p style="margin:0 0 3px;color:${onSurface};font-size:14px;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.3;">${f.title}</p>
-            <p style="margin:0;color:${onVariant};font-size:13px;line-height:1.55;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${f.desc}</p>
-          </td>
-        </tr></tbody></table>
-      </td>
-    </tr>`).join("");
-
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Ya estás en la lista · Chakana</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ya estás en la lista · Chakana</title>
 </head>
-<body style="margin:0;padding:0;background-color:${background};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:${background};">
+<span style="display:none;max-height:0;overflow:hidden;">Serás de los primeros en saber cuando Chakana esté lista en Cuenca.&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;&#847;&zwnj;</span>
 
-  <!-- Preheader oculto — rellena el preview de Gmail -->
-  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
-    Serás de los primeros en saber cuando Chakana esté lista. Aquí tu apoyo vuelve.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
-  </div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${background};padding:40px 16px;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:${background};padding:48px 16px;">
-    <tbody><tr><td align="center">
+  <!-- HEADER -->
+  <tr>
+    <td style="background:linear-gradient(160deg,#1A0F0D 0%,#2C1410 45%,#1C2E2D 100%);border-radius:12px 12px 0 0;padding:40px 40px 32px;text-align:center;">
+      <img src="https://chakana.gavanti.org/logo.svg" alt="Chakana" width="56" height="55" style="display:block;margin:0 auto 18px;"/>
+      <p style="margin:0 0 8px;color:rgba(255,255,255,0.55);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">CHAKANA · ECONOMÍA CIRCULAR</p>
+      <p style="margin:0;color:#fff;font-size:26px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:-0.01em;">Ya estás en la lista.</p>
+    </td>
+  </tr>
 
-      <!-- Card -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:${surface};border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(134,35,26,0.07);">
-        <tbody>
+  <!-- BODY -->
+  <tr>
+    <td style="background:${surface};padding:36px 40px 28px;">
+      <p style="margin:0 0 12px;color:${onSurface};font-size:15px;font-family:Arial,sans-serif;">Hola,</p>
+      <p style="margin:0 0 28px;color:${onVariant};font-size:14px;line-height:1.65;font-family:Arial,sans-serif;">Gracias por unirte a la lista de espera de <strong style="color:${onSurface};">Chakana</strong>. Serás de los primeros en saber cuando la app esté lista para circular en Cuenca.</p>
 
-          <!-- ── HEADER ── -->
-          <tr>
-            <td style="background:linear-gradient(160deg,#1A0F0D 0%,#2C1410 40%,#1C2E2D 100%);padding:44px 44px 36px;text-align:center;">
-              <img src="https://chakana.gavanti.org/logo.svg" alt="Chakana" width="60" height="59" style="display:inline-block;margin-bottom:20px;" />
-              <p style="margin:0 0 10px;color:rgba(255,255,255,0.65);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                CHAKANA · ECONOMÍA CIRCULAR
-              </p>
-              <h1 style="margin:0;color:#FFFFFF;font-size:30px;font-weight:700;line-height:1.15;letter-spacing:-0.02em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                Ya estás en la lista.
-              </h1>
-            </td>
-          </tr>
+      <p style="margin:0 0 16px;color:${primary};font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;font-family:Arial,sans-serif;">LO QUE VIENE</p>
 
-          <!-- ── BODY ── -->
-          <tr>
-            <td style="padding:40px 44px 32px;background-color:${surface};">
-
-              <p style="margin:0 0 8px;color:${onSurface};font-size:16px;line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                Hola,
-              </p>
-              <p style="margin:0 0 32px;color:${onVariant};font-size:15px;line-height:1.7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                Gracias por unirte a la lista de espera de <strong style="color:${onSurface};font-weight:600;">Chakana</strong>.
-                Serás de los primeros en saber cuando la app esté lista para circular en Cuenca.
-              </p>
-
-              <!-- Eyebrow -->
-              <p style="margin:0 0 20px;color:${primary};font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                02 · LO QUE VIENE
-              </p>
-
-              <!-- Feature cards -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
-                <tbody>${featureRows}</tbody>
-              </table>
-
-              <!-- Divider -->
-              <div style="height:1px;background-color:${outline};margin:0 0 28px;"></div>
-
-              <p style="margin:0 0 6px;color:${onVariant};font-size:14px;line-height:1.65;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                Aquí tu apoyo vuelve. Te avisamos pronto.
-              </p>
-              <p style="margin:0;color:${onSurface};font-size:14px;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                El equipo de Chakana
-              </p>
-
-            </td>
-          </tr>
-
-          <!-- ── FOOTER ACCENT ── -->
-          <tr>
-            <td style="background-color:${surfaceLow};padding:20px 44px;border-top:1px solid ${outline};">
-              <table width="100%" cellpadding="0" cellspacing="0"><tbody><tr>
-                <td>
-                  <p style="margin:0;color:${onMuted};font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                    Chakana · Cuenca, Ecuador
-                  </p>
-                </td>
-                <td align="right">
-                  <!-- Chakana cross accent -->
-                  <span style="color:${primary};font-size:16px;opacity:0.3;">✦</span>
-                </td>
-              </tr></tbody></table>
-            </td>
-          </tr>
-
-        </tbody>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding-bottom:14px;">
+            <table cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="width:10px;height:10px;background:${primary};border-radius:2px;vertical-align:top;margin-top:3px;"></td>
+              <td style="width:12px;"></td>
+              <td><p style="margin:0;color:${onSurface};font-size:13px;font-family:Arial,sans-serif;"><strong>Tambos participantes</strong> — Paga en locales del barrio con la app.</p></td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:14px;">
+            <table cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="width:10px;height:10px;background:${secondary};border-radius:2px;vertical-align:top;"></td>
+              <td style="width:12px;"></td>
+              <td><p style="margin:0;color:${onSurface};font-size:13px;font-family:Arial,sans-serif;"><strong>Aurios — crédito circular</strong> — Gana crédito y úsalo en tu próxima visita.</p></td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:0;">
+            <table cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="width:10px;height:10px;background:${primary};border-radius:2px;vertical-align:top;"></td>
+              <td style="width:12px;"></td>
+              <td><p style="margin:0;color:${onSurface};font-size:13px;font-family:Arial,sans-serif;"><strong>Reseñas en cadena</strong> — Tu voz queda grabada de forma permanente.</p></td>
+            </tr></table>
+          </td>
+        </tr>
       </table>
 
-      <!-- Sub-footer -->
-      <p style="margin:24px 0 4px;color:${onMuted};font-size:11px;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        Recibiste este correo porque te registraste en chakana.gavanti.org
-      </p>
-      <p style="margin:0;font-size:11px;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:${onMuted};text-decoration:underline;">Cancelar suscripción</a>
-      </p>
+      <div style="height:1px;background:rgba(140,133,123,0.15);margin:28px 0;"></div>
 
-    </td></tr></tbody>
-  </table>
+      <p style="margin:0 0 4px;color:${onVariant};font-size:13px;font-family:Arial,sans-serif;">Aquí tu apoyo vuelve. Te avisamos pronto.</p>
+      <p style="margin:0;color:${onSurface};font-size:13px;font-weight:700;font-family:Arial,sans-serif;">El equipo de Chakana</p>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td style="background:${surfaceLow};border-top:1px solid rgba(140,133,123,0.15);border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;">
+      <p style="margin:0 0 12px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;">Chakana · Cuenca, Ecuador &nbsp;·&nbsp; ${email}</p>
+      <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="display:inline-block;padding:8px 20px;background:transparent;border:1px solid rgba(140,133,123,0.35);border-radius:6px;color:${onMuted};font-size:11px;font-family:Arial,sans-serif;text-decoration:none;">Cancelar suscripción</a>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
 </body>
 </html>`;
 }
