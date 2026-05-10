@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useLang } from "@/app/lib/i18n";
 
 export default function Footer() {
+  const { t } = useLang();
+  const f = t.footer;
+
   return (
     <footer className="border-t border-[rgba(140,133,123,0.15)] py-12 px-4">
       <div className="max-w-5xl mx-auto">
@@ -16,10 +22,10 @@ export default function Footer() {
                 CHAKANA
               </div>
               <div className="font-body text-xs text-on-surface-muted mt-0.5">
-                Ecosistema de Economía Circular
+                {f.tagline}
               </div>
               <div className="font-body text-[10px] text-on-surface-muted opacity-60 mt-1">
-                © {new Date().getFullYear()} Gavanti. Todos los derechos reservados.
+                © {new Date().getFullYear()} Gavanti. {f.rights}
               </div>
               <a
                 href="mailto:support@gavanti.org"
@@ -37,15 +43,14 @@ export default function Footer() {
             </div>
             <span className="text-on-surface-muted opacity-30 hidden sm:inline">|</span>
             <Link href="/terminos" className="font-body text-[11px] text-on-surface-muted opacity-70 hover:opacity-100 transition-opacity">
-              Términos
+              {f.terms}
             </Link>
             <Link href="/privacidad" className="font-body text-[11px] text-on-surface-muted opacity-70 hover:opacity-100 transition-opacity">
-              Privacidad
+              {f.privacy}
             </Link>
           </div>
 
         </div>
-
 
       </div>
     </footer>

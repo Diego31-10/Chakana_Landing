@@ -3,9 +3,12 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/app/lib/gsap";
+import { useLang } from "@/app/lib/i18n";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t } = useLang();
+  const h = t.hero;
 
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.5 });
@@ -54,19 +57,16 @@ export default function Hero() {
         {/* Left — copy */}
         <div>
           <p className="hero-stamp font-body font-semibold text-[11px] tracking-[0.20em] uppercase text-on-surface-variant mb-6">
-            · CUENCA, ECUADOR ·
+            {h.stamp}
           </p>
 
           <h1 className="hero-headline font-display font-bold text-on-surface mb-8 leading-[1.02] tracking-[-0.025em] text-[clamp(2.5rem,6.5vw,5rem)] max-w-[14ch]">
-            Aquí tu <span className="text-primary">apoyo</span> vuelve.
+            {h.headline1}<span className="text-primary">{h.headlineAccent}</span>{h.headline2}
           </h1>
 
           <p className="hero-lede font-body text-on-surface-variant text-lg leading-relaxed mb-0 max-w-[42ch]">
-            Un ecosistema de economía circular para el barrio: lo que ya no
-            usas encuentra un próximo lugar, lo que necesitas regresa por
-            manos cercanas.
+            {h.lede}
           </p>
-
         </div>
 
         {/* Right — Chakana mark (hidden on mobile) */}
@@ -80,7 +80,7 @@ export default function Hero() {
             aria-hidden="true"
           />
           <p className="font-body font-semibold text-[10px] tracking-[0.28em] uppercase text-on-surface-muted">
-            Reactivando la Atenas
+            {h.reactivating}
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useLang } from "@/app/lib/i18n";
 
 const TECHS = [
   { name: "Vercel",     logo: "/vercel-seeklogo.svg",       nativeW: 512,  nativeH: 116 },
@@ -10,18 +11,18 @@ const TECHS = [
   { name: "Dev3pack",   logo: "/Dev3pack.svg",              nativeW: 1125, nativeH: 500, scale: 1.6 },
 ];
 
-// Fixed bounding box — every logo fits inside this space via object-fit: contain
 const BOX_W = 120;
 const BOX_H = 45;
 
 export default function TechStrip() {
+  const { t } = useLang();
+
   return (
     <div
       className="relative w-full overflow-hidden py-10"
       style={{ backgroundColor: "var(--background)" }}
     >
       <div className="max-w-5xl mx-auto px-4">
-        {/* Eyebrow */}
         <p
           className="text-center font-body font-semibold mb-7"
           style={{
@@ -31,10 +32,9 @@ export default function TechStrip() {
             color: "var(--on-surface-muted)",
           }}
         >
-          IMPULSADO POR
+          {t.techStrip.poweredBy}
         </p>
 
-        {/* Marquee viewport — fade edges, clips overflow */}
         <div
           style={{
             maskImage:
@@ -44,9 +44,7 @@ export default function TechStrip() {
             overflow: "hidden",
           }}
         >
-        {/* Marquee track */}
         <div className="tech-marquee-track flex">
-          {/* Copy A */}
           {TECHS.map((tech) => (
             <div
               key={`a-${tech.name}`}
@@ -68,7 +66,6 @@ export default function TechStrip() {
               />
             </div>
           ))}
-          {/* Copy B — seamless duplicate */}
           {TECHS.map((tech) => (
             <div
               key={`b-${tech.name}`}

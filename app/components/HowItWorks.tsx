@@ -2,36 +2,14 @@
 
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/app/lib/gsap";
-
-const STEPS = [
-  {
-    number: "01",
-    eyebrow: "CONSUME",
-    title: "Consume en un Tambu",
-    body: "Visita un local participante y paga con la app. Tu apoyo queda registrado de forma inmutable.",
-    accent: "secondary" as const,
-  },
-  {
-    number: "02",
-    eyebrow: "APORTA",
-    title: "Deja tu reseña",
-    body: "Comparte tu experiencia. Cada reseña auténtica aporta valor al barrio y queda grabada de forma permanente.",
-    accent: "primary" as const,
-  },
-  {
-    number: "03",
-    eyebrow: "CIRCULA",
-    title: "Gana Aurios, circula más",
-    body: "Recibes Aurios — el crédito del barrio — que puedes usar para descuentos en tu próxima visita. El ciclo continúa.",
-    accent: "secondary" as const,
-  },
-];
+import { useLang } from "@/app/lib/i18n";
 
 export default function HowItWorks() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t } = useLang();
+  const hiw = t.howItWorks;
 
   useGSAP(() => {
-    // Header entrance
     gsap.from(".hiw-header > *", {
       opacity: 0,
       y: 20,
@@ -45,7 +23,6 @@ export default function HowItWorks() {
       },
     });
 
-    // Batch card entrance — top-level, NOT inside a timeline
     ScrollTrigger.batch(".hiw-card", {
       onEnter: (elements) => {
         gsap.from(elements, {
@@ -60,7 +37,6 @@ export default function HowItWorks() {
       once: true,
     });
 
-    // Connector line draw
     gsap.from(".hiw-connector", {
       scaleX: 0,
       transformOrigin: "left center",
@@ -74,6 +50,8 @@ export default function HowItWorks() {
     });
   }, { scope: sectionRef });
 
+  const ACCENTS = ["secondary", "primary", "secondary"] as const;
+
   return (
     <section
       ref={sectionRef}
@@ -84,51 +62,53 @@ export default function HowItWorks() {
 
         <div className="hiw-header mb-16">
           <p className="font-body font-semibold text-[11px] tracking-[0.18em] uppercase text-primary mb-4">
-            02 · CÓMO FUNCIONA
+            {hiw.eyebrow}
           </p>
           <h2 className="font-display font-bold text-on-surface text-[clamp(1.75rem,4vw,2.5rem)] leading-tight tracking-[-0.02em] max-w-[22ch]">
-            El ciclo que reactiva el barrio.
+            {hiw.title}
           </h2>
         </div>
 
         <div className="hiw-cards relative grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Connector line — desktop only */}
           <div
             className="hiw-connector hidden md:block absolute top-10 left-[calc(33%-1rem)] right-[calc(33%-1rem)] h-px bg-primary/20"
             aria-hidden="true"
           />
 
-          {STEPS.map((step) => (
-            <article
-              key={step.number}
-              className="hiw-card relative bg-surface rounded-md p-8 hover:shadow-soil transition-shadow duration-300"
-            >
-              <span
-                className={`font-display font-bold text-5xl leading-none tracking-[-0.03em] mb-6 block ${
-                  step.accent === "primary" ? "text-primary/20" : "text-secondary/20"
-                }`}
+          {hiw.steps.map((step, i) => {
+            const accent = ACCENTS[i];
+            const number = String(i + 1).padStart(2, "0");
+            return (
+              <article
+                key={number}
+                className="hiw-card relative bg-surface rounded-md p-8 hover:shadow-soil transition-shadow duration-300"
               >
-                {step.number}
-              </span>
+                <span
+                  className={`font-display font-bold text-5xl leading-none tracking-[-0.03em] mb-6 block ${
+                    accent === "primary" ? "text-primary/20" : "text-secondary/20"
+                  }`}
+                >
+                  {number}
+                </span>
 
-              <p
-                className={`font-body font-semibold text-[10px] tracking-[0.18em] uppercase mb-3 ${
-                  step.accent === "primary" ? "text-primary" : "text-secondary"
-                }`}
-              >
-                {step.eyebrow}
-              </p>
+                <p
+                  className={`font-body font-semibold text-[10px] tracking-[0.18em] uppercase mb-3 ${
+                    accent === "primary" ? "text-primary" : "text-secondary"
+                  }`}
+                >
+                  {step.eyebrow}
+                </p>
 
-              <h3 className="font-display font-semibold text-on-surface text-xl leading-tight mb-4">
-                {step.title}
-              </h3>
+                <h3 className="font-display font-semibold text-on-surface text-xl leading-tight mb-4">
+                  {step.title}
+                </h3>
 
-              <p className="font-body text-on-surface-variant text-sm leading-relaxed">
-                {step.body}
-              </p>
-
-            </article>
-          ))}
+                <p className="font-body text-on-surface-variant text-sm leading-relaxed">
+                  {step.body}
+                </p>
+              </article>
+            );
+          })}
         </div>
 
       </div>
