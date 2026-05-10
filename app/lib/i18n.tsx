@@ -503,7 +503,7 @@ const translations = {
   },
 } as const;
 
-export type Translations = typeof translations.es;
+export type Translations = (typeof translations)[keyof typeof translations];
 
 interface LangContextValue {
   lang: Lang;
