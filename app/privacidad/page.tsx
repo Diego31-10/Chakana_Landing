@@ -34,8 +34,8 @@ export default function PrivacyPolicy() {
               {priv.sections.map((section) => (
                 <LegalSection key={section.title} title={section.title}>
                   {"content" in section && section.content ? (
-                    (section.content as string[]).map((p, i) =>
-                      "email" in section && i === (section.content as string[]).length - 1 ? (
+                    (section.content as readonly string[]).map((p, i) =>
+                      "email" in section && i === (section.content as readonly string[]).length - 1 ? (
                         <p key={i}>
                           {p}
                           <a href={`mailto:${section.email}`} className="text-primary underline hover:opacity-80 transition-opacity">
@@ -49,7 +49,7 @@ export default function PrivacyPolicy() {
                   ) : null}
                   {"items" in section && section.items ? (
                     <ul>
-                      {(section.items as string[]).map((item, i) => <li key={i}>{item}</li>)}
+                      {(section.items as readonly string[]).map((item, i) => <li key={i}>{item}</li>)}
                     </ul>
                   ) : null}
                   {"closing" in section && section.closing ? (
